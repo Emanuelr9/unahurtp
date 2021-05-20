@@ -57,7 +57,7 @@ router.put("/:id", (req, res) => {
                 res.sendStatus(500)
             }
         });
-    findCarrera(req.params.id, {
+    findMateria(req.params.id, {
         onSuccess,
         onNotFound: () => res.sendStatus(404),
         onError: () => res.sendStatus(500)
@@ -70,7 +70,7 @@ router.delete("/:id", (req, res) => {
         .destroy()
         .then(() => res.sendStatus(200))
         .catch(() => res.sendStatus(500));
-    findCarrera(req.params.id, {
+    findMateria(req.params.id, {
         onSuccess,
         onNotFound: () => res.sendStatus(404),
         onError: () => res.sendStatus(500)
