@@ -3,13 +3,15 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", (req, res) => {
-    console.log("Esto es un mensaje para ver en consola");
-    models.alumno
-        .findAll({
-            attributes: ["id", "nombre"]
-        })
-        .then(alumnos => res.send(alumnos))
-        .catch(() => res.sendStatus(500));
+   models.alumno.findAll({attributes: ["id","nombre","id_carrera"],
+      
+      /////////se agrega la asociacion 
+      include:[{as:'Carrera-Relacionada', model:models.carrera, 
+      attributes: ["id","nombre"]}]
+      ////////////////////////////////
+
+    })
+   .then(alumnos => res.send(alumnos)).catch(error => { return next(error)});
 });
 
 router.post("/", (req, res) => {
