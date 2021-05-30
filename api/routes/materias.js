@@ -3,15 +3,30 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", (req, res) => {
-   models.materia.findAll({attributes: ["id","nombre","id_carrera"],
-      
-      /////////se agrega la asociacion 
-      include:[{as:'Carrera-Relacionada', model:models.carrera, 
-      attributes: ["id","nombre"]}]
-      ////////////////////////////////
+
+    const paginaActual = req.query.paginaActual;
+    const cantidadAVer = req.query.cantidadAVer;
+
+
+    models.materia.
+    findAll({
+        attributes: ["id", "nombre", "id_carrera"],
+        /////////se agrega la asociacion 
+        include: [{
+            as: 'Carrera-Relacionada',
+            model: models.carrera,
+            attributes: ["id", "nombre"]
+        }],
+        ////////////////////////////////
+
+        offset: (paginaActual - 1) * cantidadAVer, //Desde donde hasta donde en cada paginacion
+        limit: paginaActual // Hasta donde quiero que llegue
 
     })
-   .then(materias => res.send(materias)).catch(error => { return next(error)});
+
+
+
+    .then(materias => res.send(materias)).catch(error => { return next(error) });
 });
 
 router.post("/", (req, res) => {

@@ -3,15 +3,33 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", (req, res) => {
-   models.alumno.findAll({attributes: ["id","nombre","id_carrera"],
-      
-      /////////se agrega la asociacion 
-      include:[{as:'Carrera-Relacionada', model:models.carrera, 
-      attributes: ["id","nombre"]}]
-      ////////////////////////////////
 
-    })
-   .then(alumnos => res.send(alumnos)).catch(error => { return next(error)});
+    const paginaActual = req.query.paginaActual;
+    const cantidadAVer = req.query.cantidadAVer;
+
+    const inicioIndice = (paginaActual - 1) * cantidadAVer // Desde donde hasta donde en cada paginacion
+
+    const finIndice = paginaActual * cantidadAVer // Hasta donde quiero que llegue
+
+    models.alumno.findAll({
+
+            attributes: ["id", "nombre", "id_carrera"],
+
+            /////////se agrega la asociacion 
+            include: [{
+                as: 'Carrera-Relacionada',
+                model: models.carrera,
+                attributes: ["id", "nombre"],
+            }],
+            ////////////////////////////////
+
+            //offset: (paginaActual - 1) * cantidadAVer, / / Desde donde hasta donde en cada paginacion
+            //limit: paginaActual // Hasta donde quiero que llegue
+
+
+        })
+        .then(alumnos => res.send(alumnos)).catch(error => { return next(error) });
+
 });
 
 router.post("/", (req, res) => {
@@ -79,4 +97,5 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+module.exports = router;
 module.exports = router;
