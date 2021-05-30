@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
         ////////////////////////////////
 
         offset: (paginaActual - 1) * cantidadAVer, //Desde donde hasta donde en cada paginacion
-        limit: paginaActual // Hasta donde quiero que llegue
+        limit: paginaActual
 
     })
 
