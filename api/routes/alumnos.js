@@ -4,14 +4,13 @@ var models = require("../models");
 
 router.get("/", (req, res) => {
 
-    const paginaActual = req.query.paginaActual;
-    const cantidadAVer = req.query.cantidadAVer;
+    const paginaActual = Number(req.query.paginaActual);
+    const cantidadAVer = Number(req.query.cantidadAVer);
 
-    const inicioIndice = (paginaActual - 1) * cantidadAVer // Desde donde hasta donde en cada paginacion
+    
 
-    const finIndice = paginaActual * cantidadAVer // Hasta donde quiero que llegue
-
-    models.alumno.findAll({
+    models.alumno.
+    findAll({
 
             attributes: ["id", "nombre", "id_carrera"],
 
@@ -23,8 +22,8 @@ router.get("/", (req, res) => {
             }],
             ////////////////////////////////
 
-            //offset: (paginaActual - 1) * cantidadAVer, / / Desde donde hasta donde en cada paginacion
-            //limit: paginaActual // Hasta donde quiero que llegue
+            offset: (paginaActual - 1) * cantidadAVer, // Desde donde hasta donde en cada paginacion
+            limit: paginaActual 
 
 
         })

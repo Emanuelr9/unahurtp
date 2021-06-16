@@ -4,8 +4,8 @@ var models = require("../models");
 
 router.get("/", (req, res) => {
 
-    const paginaActual = req.query.paginaActual;
-    const cantidadAVer = req.query.cantidadAVer;
+    const paginaActual = Number(req.query.paginaActual);
+    const cantidadAVer = Number(req.query.cantidadAVer);
 
 
     models.materia.
