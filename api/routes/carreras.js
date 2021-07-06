@@ -2,7 +2,18 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
+
 router.get("/", (req, res) => {
+  console.log("Esto es un mensaje para ver en consola");
+  models.carrera
+    .findAll({
+      attributes: ["id", "nombre"]
+    })
+    .then(carreras => res.send(carreras))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/paginacion", (req, res) => {
     const paginaActual = Number(req.query.paginaActual);
     const cantidadAVer = Number(req.query.cantidadAVer);
     models.carrera
@@ -10,7 +21,7 @@ router.get("/", (req, res) => {
             attributes: ["id", "nombre"],
 
             offset: (paginaActual - 1) * cantidadAVer, //Desde donde hasta donde en cada paginacion
-            limit: paginaActual
+            limit: cantidadAVer
 
         })
         .then(carreras => res.send(carreras))
@@ -19,7 +30,7 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
     models.carrera
-        .create({ nombre: req.body.nombre })
+        .create({ nombre: req.body.nombre})
         .then(carrera => res.status(201).send({ id: carrera.id }))
         .catch(error => {
             if (error == "SequelizeUniqueConstraintError: Validation error") {
@@ -80,6 +91,16 @@ router.delete("/:id", (req, res) => {
         onNotFound: () => res.sendStatus(404),
         onError: () => res.sendStatus(500)
     });
+});
+
+router.get("/", (req, res) => {
+  console.log("Esto es un mensaje para ver en consola");
+  models.carrera
+    .findAll({
+      attributes: ["id", "nombre"]
+    })
+    .then(carreras => res.send(carreras))
+    .catch(() => res.sendStatus(500));
 });
 
 module.exports = router;

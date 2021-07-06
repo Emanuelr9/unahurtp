@@ -2,12 +2,23 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
+
 router.get("/", (req, res) => {
+   models.alumno.findAll({attributes: ["id","nombre","id_carrera"],
+      
+      /////////se agrega la asociacion 
+      include:[{as:'Carrera-Relacionada', model:models.carrera, 
+      attributes: ["id","nombre"]}]
+      ////////////////////////////////
+
+    }).then(alumnos => res.send(alumnos)).catch(error => { return next(error) });
+});
+
+
+router.get("/paginacion", (req, res) => {
 
     const paginaActual = Number(req.query.paginaActual);
     const cantidadAVer = Number(req.query.cantidadAVer);
-
-    
 
     models.alumno.
     findAll({
@@ -23,7 +34,7 @@ router.get("/", (req, res) => {
             ////////////////////////////////
 
             offset: (paginaActual - 1) * cantidadAVer, // Desde donde hasta donde en cada paginacion
-            limit: paginaActual 
+            limit: cantidadAVer
 
 
         })
@@ -33,7 +44,7 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
     models.alumno
-        .create({ nombre: req.body.nombre })
+        .create({ nombre: req.body.nombre,id_carrera: req.body.id_carrera })
         .then(alumno => res.status(201).send({ id: alumno.id }))
         .catch(error => {
             if (error == "SequelizeUniqueConstraintError: Validation error") {
