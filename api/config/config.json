@@ -1,10 +1,10 @@
 {
     "development": {
-        "username": "root",
-        "password": "Vegeta1000",
-        "database": "api_v1",
+        "username": "",
+        "password": "",
+        "database": "",
         "host": "localhost",
         "dialect": "mariadb"
-        
+
     }
 }

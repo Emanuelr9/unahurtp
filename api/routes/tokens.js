@@ -30,7 +30,10 @@ router.get('/protected', ensureToken, (req, res) => {
     jwt.verify(req.token, 'key_user', (err, data) => { //verifica el token que viene de la peticion, una vez recibido, obtiene la clave privada.
 
         if (err) {
+
             res.sendStatus(403) //error de estado
+
+           
         } else {
             res.json({
                 text: 'Acceso autorizado',
@@ -48,9 +51,9 @@ function ensureToken(req, res, next) {
     console.log(bearerHeader);
 
     if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(" ");
-        const bearerToken = bearer[1];
-        req.token = bearerToken;
+       const bearer = bearerHeader.split(" ");
+       const bearerToken = bearer[1];
+        req.token = bearerToken;;
         next();
     } else {
         res.sendStatus(403) //Si no se a registrado, envia un codgio de no permitido
